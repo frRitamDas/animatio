@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>MacBook Pro — Frame by Frame · Animatio 03</title>
+<meta name="description" content="Animatio 03 — a scroll-driven 120-frame MacBook Pro product film. An exact CSS 3D model scrubbed frame-by-frame, no video, no images." />
+<meta name="theme-color" content="#050506" />
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/macbook.css" />
+<link rel="stylesheet" href="css/sections.css" />
+</head>
+<body id="top">
+
+<div class="fx-grain" aria-hidden="true"></div>
+<div class="fx-vignette" aria-hidden="true"></div>
+
+<!-- ══════════════════════════ NAV ══════════════════════════ -->
+<header class="nav" id="nav">
+  <a class="nav__brand" href="#top" aria-label="MacBook Pro, home">
+    <span class="nav__mark" aria-hidden="true"></span>
+    <span class="nav__name">MacBook<em>Pro</em></span>
+  </a>
+
+  <nav class="nav__links" aria-label="Sections">
+    <a href="#display">Display</a>
+    <a href="#keyboard">Keyboard</a>
+    <a href="#silicon">Silicon</a>
+    <a href="#finish">Finish</a>
+  </nav>
+
+  <div class="nav__right">
+    <span class="nav__series">ANIMATIO <b>03</b></span>
+    <a class="nav__cta" href="#buy">Buy</a>
+  </div>
+</header>
+
+<main>
+
+<!-- ══════════════════════════ 01 · HERO FILM ══════════════════════════ -->
+<section class="hero" id="hero" aria-label="MacBook Pro frame-by-frame animation">
+  <div class="hero__pin">
+
+    <!-- ─────────── the machine ─────────── -->
+    <div class="stage" id="stage">
+      <div class="scene" id="scene">
+
+        <div class="mb" id="mb">
+
+          <!-- ░░ BASE ░░ -->
+          <div class="mb__face mb__deck">
+            <div class="deck">
+              <span class="deck__speaker deck__speaker--l" aria-hidden="true"></span>
+              <span class="deck__speaker deck__speaker--r" aria-hidden="true"></span>
+              <div class="deck__kbd" id="kbd" aria-hidden="true"></div>
+              <div class="deck__pad" aria-hidden="true"><i></i></div>
+              <span class="deck__foot" aria-hidden="true"></span>
+              <span class="deck__glow" aria-hidden="true"></span>
+              <span class="deck__sheen" aria-hidden="true"></span>
+            </div>
+          </div>
+
+          <div class="mb__face mb__bottom" aria-hidden="true"></div>
+
+          <div class="mb__face mb__wall mb__wall--front" aria-hidden="true">
+            <span class="wall__foot"></span>
+          </div>
+          <div class="mb__face mb__wall mb__wall--back" aria-hidden="true"></div>
+
+          <div class="mb__face mb__wall mb__wall--left" aria-hidden="true">
+            <span class="port port--magsafe"></span>
+            <span class="port port--tb"></span>
+            <span class="port port--tb"></span>
+            <span class="port port--jack"></span>
+          </div>
+          <div class="mb__face mb__wall mb__wall--right" aria-hidden="true">
+            <span class="port port--hdmi"></span>
+            <span class="port port--sd"></span>
+            <span class="port port--tb"></span>
+          </div>
+
+          <!-- ░░ LID ░░ -->
+          <div class="mb__lid" id="lid">
+
+            <div class="mb__face lid__alu" aria-hidden="true">
+              <div class="lid__alu-inner"><span class="lid__logo"></span></div>
+            </div>
+
+            <div class="mb__face lid__screen">
+              <div class="scr">
+                <div class="scr__panel">
+                  <div class="scr__wall" aria-hidden="true"></div>
+
+                  <div class="scr__ui" id="scrUi" aria-hidden="true">
+                    <div class="menubar">
+                      <span class="menubar__apple"></span>
+                      <span class="menubar__app">Finder</span>
+                      <span class="menubar__menu">File</span>
+                      <span class="menubar__menu">Edit</span>
+                      <span class="menubar__menu">View</span>
+                      <span class="menubar__menu">Go</span>
+                      <span class="menubar__menu">Window</span>
+                      <span class="menubar__spacer"></span>
+                      <span class="menubar__ico menubar__ico--batt"></span>
+                      <span class="menubar__ico menubar__ico--wifi"></span>
+                      <span class="menubar__ico menubar__ico--sun"></span>
+                      <span class="menubar__clock">9:41</span>
+                    </div>
+
+                    <div class="win">
+                      <div class="win__bar">
+                        <i class="dot dot--r"></i><i class="dot dot--y"></i><i class="dot dot--g"></i>
+                        <span class="win__title">Frames — 001…120</span>
+                      </div>
+                      <div class="win__body">
+                        <div class="win__side">
+                          <span></span><span></span><span></span><span></span><span></span>
+                        </div>
+                        <div class="win__grid" id="winGrid"></div>
+                      </div>
+                    </div>
+
+                    <div class="dock">
+                      <span class="dock__app dock__app--finder"></span>
+                      <span class="dock__app dock__app--mail"></span>
+                      <span class="dock__app dock__app--safari"></span>
+                      <span class="dock__app dock__app--music"></span>
+                      <span class="dock__app dock__app--code"></span>
+                      <span class="dock__app dock__app--term"></span>
+                      <span class="dock__sep"></span>
+                      <span class="dock__app dock__app--trash"></span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="scr__notch" aria-hidden="true"><i class="scr__cam"></i></div>
+                <div class="scr__glass" aria-hidden="true"></div>
+                <div class="scr__power" id="scrPower" aria-hidden="true"></div>
+              </div>
+            </div>
+
+            <div class="mb__face lid__edge lid__edge--free" aria-hidden="true"></div>
+            <div class="mb__face lid__edge lid__edge--left" aria-hidden="true"></div>
+            <div class="mb__face lid__edge lid__edge--right" aria-hidden="true"></div>
+            <div class="mb__face lid__edge lid__edge--hinge" aria-hidden="true"></div>
+          </div>
+
+          <!-- ░░ CONTACT SHADOW ░░ -->
+          <div class="mb__shadow" aria-hidden="true"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ─────────── copy ─────────── -->
+    <div class="hero__copy" id="heroCopy">
+      <p class="line" data-from="0"  data-to="13">
+        <span class="line__k">01 — Closed</span>
+        <span class="line__t">MacBook<em>Pro</em></span>
+        <span class="line__s">A single piece of aluminium, 1.55&nbsp;cm thin.</span>
+      </p>
+      <p class="line" data-from="14" data-to="37">
+        <span class="line__k">02 — The hinge</span>
+        <span class="line__t">One motion.</span>
+        <span class="line__s">The lid sweeps through 107° in a single, damped arc.</span>
+      </p>
+      <p class="line" data-from="38" data-to="57">
+        <span class="line__k">03 — The panel</span>
+        <span class="line__t">Liquid Retina XDR.</span>
+        <span class="line__s">1,600 nits peak. 1,000,000:1 contrast.</span>
+      </p>
+      <p class="line" data-from="58" data-to="79">
+        <span class="line__k">04 — The pixel</span>
+        <span class="line__t">Every frame, rendered.</span>
+        <span class="line__s">ProMotion 120Hz. Nothing waits. Nothing tears.</span>
+      </p>
+      <p class="line" data-from="80" data-to="99">
+        <span class="line__k">05 — The edge</span>
+        <span class="line__t">15.5 millimetres.</span>
+        <span class="line__s">All of it. Ports, thermals, battery, silicon.</span>
+      </p>
+      <p class="line" data-from="100" data-to="120">
+        <span class="line__k">06 — The engine</span>
+        <span class="line__t">M4. M4 Pro. M4 Max.</span>
+        <span class="line__s">Up to 128GB of unified memory. Silence as a feature.</span>
+      </p>
+    </div>
+
+    <!-- ─────────── HUD ─────────── -->
+    <div class="hud" aria-hidden="true">
+      <span class="hud__label">FRAME</span>
+      <span class="hud__num" id="hudNum">000</span>
+      <span class="hud__of">/ 120</span>
+    </div>
+
+    <!-- ─────────── frame rail ─────────── -->
+    <div class="rail" id="rail" aria-hidden="true"></div>
+
+    <div class="hero__hint" id="heroHint">
+      <span>Scroll to advance the frame</span>
+      <i></i>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ 02 · DISPLAY ══════════════════════════ -->
+<section class="sec sec--display" id="display">
+  <div class="sec__head">
+    <span class="eyebrow"><i></i>Display</span>
+    <h2 class="h2">Extreme dynamic range.<br /><em>Extremely.</em></h2>
+    <p class="lede">
+      A tandem OLED panel with 1,600 nits of peak HDR brightness and 1,000 nits of
+      sustained full-screen brightness — on a machine you can close with one hand.
+    </p>
+  </div>
+
+  <div class="xdr" id="xdr">
+    <div class="xdr__frame">
+      <div class="xdr__scr">
+        <div class="xdr__wall" aria-hidden="true"></div>
+        <div class="xdr__bloom" id="xdrBloom" aria-hidden="true"></div>
+        <div class="xdr__glass" aria-hidden="true"></div>
+        <div class="xdr__notch" aria-hidden="true"></div>
+      </div>
+      <div class="xdr__base" aria-hidden="true"></div>
+    </div>
+    <div class="xdr__meter" aria-hidden="true">
+      <span class="xdr__meter-fill" id="xdrMeter"></span>
+      <span class="xdr__meter-val" id="xdrVal">1 nit</span>
+    </div>
+  </div>
+
+  <ul class="stats stats--display">
+    <li><b data-count="1600">0</b><span>nits peak HDR</span></li>
+    <li><b data-count="1000">0</b><span>nits full-screen</span></li>
+    <li><b data-count="1000000" data-suffix=":1">0</b><span>contrast ratio</span></li>
+    <li><b data-count="120" data-suffix="Hz">0</b><span>ProMotion</span></li>
+  </ul>
+</section>
+
+<!-- ══════════════════════════ 03 · KEYBOARD ══════════════════════════ -->
+<section class="sec sec--keys" id="keyboard">
+  <div class="sec__head sec__head--center">
+    <span class="eyebrow"><i></i>Keyboard</span>
+    <h2 class="h2">Backlit. Key by key.</h2>
+    <p class="lede">Individual LED per key, tuned to the room. Scroll to light them.</p>
+  </div>
+
+  <div class="keys" id="keysStage">
+    <div class="keys__well" id="keysWell"></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ 04 · SILICON ══════════════════════════ -->
+<section class="sec sec--silicon" id="silicon">
+  <div class="sec__head">
+    <span class="eyebrow"><i></i>Silicon</span>
+    <h2 class="h2">Three chips.<br /><em>One architecture.</em></h2>
+  </div>
+
+  <div class="chips">
+    <article class="chip">
+      <span class="chip__die" data-cores="10"></span>
+      <h3>M4</h3>
+      <p class="chip__tag">The everyday pro</p>
+      <dl>
+        <div><dt>CPU</dt><dd>10 cores</dd></div>
+        <div><dt>GPU</dt><dd>10 cores</dd></div>
+        <div><dt>Memory</dt><dd>up to 32GB</dd></div>
+        <div><dt>NPU</dt><dd>38 TOPS</dd></div>
+      </dl>
+    </article>
+
+    <article class="chip chip--pro">
+      <span class="chip__die" data-cores="14"></span>
+      <h3>M4 Pro</h3>
+      <p class="chip__tag">The studio in a laptop</p>
+      <dl>
+        <div><dt>CPU</dt><dd>up to 14 cores</dd></div>
+        <div><dt>GPU</dt><dd>up to 20 cores</dd></div>
+        <div><dt>Memory</dt><dd>up to 64GB</dd></div>
+        <div><dt>Bandwidth</dt><dd>273 GB/s</dd></div>
+      </dl>
+    </article>
+
+    <article class="chip chip--max">
+      <span class="chip__die" data-cores="16"></span>
+      <h3>M4 Max</h3>
+      <p class="chip__tag">No ceiling</p>
+      <dl>
+        <div><dt>CPU</dt><dd>up to 16 cores</dd></div>
+        <div><dt>GPU</dt><dd>up to 40 cores</dd></div>
+        <div><dt>Memory</dt><dd>up to 128GB</dd></div>
+        <div><dt>Bandwidth</dt><dd>546 GB/s</dd></div>
+      </dl>
+    </article>
+  </div>
+</section>
+
+<!-- ══════════════════════════ 05 · FINISH ══════════════════════════ -->
+<section class="sec sec--finish" id="finish">
+  <div class="finish__pin">
+    <div class="sec__head sec__head--center">
+      <span class="eyebrow"><i></i>Finish</span>
+      <h2 class="h2">Two anodised finishes.</h2>
+    </div>
+    <div class="finish__track" id="finishTrack">
+      <article class="finish finish--black">
+        <div class="finish__mock" aria-hidden="true">
+          <div class="finish__scr"></div>
+          <div class="finish__base"></div>
+        </div>
+        <h3>Space Black</h3>
+        <p>An anodised seal that resists fingerprints and holds its depth in any light.</p>
+      </article>
+      <article class="finish finish--silver">
+        <div class="finish__mock" aria-hidden="true">
+          <div class="finish__scr"></div>
+          <div class="finish__base"></div>
+        </div>
+        <h3>Silver</h3>
+        <p>The classic bead-blasted aluminium. Bright, cool and unmistakably machined.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ 06 · CTA ══════════════════════════ -->
+<section class="sec sec--buy" id="buy">
+  <div class="buy">
+    <span class="eyebrow"><i></i>Animatio 03</span>
+    <h2 class="h2 h2--xl">Built out of 120 frames.<br /><em>Not one video file.</em></h2>
+    <p class="lede">
+      Every degree of the hinge, every degree of the camera, every nit of the panel is
+      interpolated from a keyframe table and painted as real CSS 3D geometry.
+    </p>
+    <a class="btn" href="#top">Back to frame 000</a>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="foot__in">
+    <span>Animatio <b>03</b> — MacBook Pro, frame by frame</span>
+    <span class="foot__meta">CSS 3D · 120 frames · no images, no video</span>
+  </div>
+</footer>
+
+<!-- dev / QA overlay (press D) -->
+<div class="qa" id="qa" hidden>
+  <div class="qa__row"><label>Lid <input type="range" id="qaLid" min="0" max="120" value="120" /></label><b id="qaLidV">107°</b></div>
+  <div class="qa__row"><label>Elev <input type="range" id="qaElev" min="-90" max="0" value="-32" /></label><b id="qaElevV">-32°</b></div>
+  <div class="qa__row"><label>Spin <input type="range" id="qaSpin" min="-45" max="45" value="6" /></label><b id="qaSpinV">6°</b></div>
+  <div class="qa__row"><label>Zoom <input type="range" id="qaZoom" min="30" max="220" value="100" /></label><b id="qaZoomV">1.00×</b></div>
+  <div class="qa__row qa__row--check">
+    <label><input type="checkbox" id="qaSnap" /> snap to frames</label>
+    <button type="button" id="qaReset">reset</button>
+  </div>
+</div>
+
+<script src="js/frames.js"></script>
+<script src="js/macbook.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

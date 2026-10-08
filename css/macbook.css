@@ -1,0 +1,674 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   macbook.css — the machine
+
+   Real 14-inch MacBook Pro, modelled at 18px = 1cm.
+     width  31.26 cm  →  562px
+     depth  22.12 cm  →  398px
+     base    1.10 cm  →   20px
+     lid     0.45 cm  →    8px      (closed height 1.55cm → 28px ✓)
+
+   COORDINATE SYSTEM
+   ─────────────────
+   .mb  is a 562 × 398 box laid flat with rotateX(90deg), so inside it:
+        local  +x  =  right
+        local  +y  =  front of the machine  (toward the user)
+        local  +z  =  up                    (out of the deck)
+   The deck plane sits at z = 0, the underside of the base at z = -20px.
+   The lid hinges on the BACK edge (local y = -199px) and swings 0 → 107°.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.stage {
+  position: absolute;
+  inset: 0;
+  perspective: 2600px;
+  perspective-origin: 50% 46%;
+  /* frame 000 seeds — also the fallback if @property is unsupported */
+  --lid: 0deg;  --elev: -76deg;  --spin: 0deg;  --scale: 0.7;
+  --cam-x: 0px; --cam-y: -61px;  --cam-z: 0px;
+  --glow: 0;  --ui: 0;  --power: 0;  --lit: 0;  --shade: 1;
+}
+
+.scene {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+  transform:
+    translate3d(var(--cam-x), var(--cam-y), var(--cam-z))
+    rotateX(var(--elev))
+    scale3d(var(--scale), var(--scale), var(--scale));
+  will-change: transform;
+}
+
+/* ── the object ───────────────────────────────────────────── */
+.mb {
+  --hw: 281px;            /* W / 2 */
+  --hd: 199px;            /* D / 2 */
+  --hh: 10px;             /* H / 2 */
+  --ht: 4px;              /* T / 2 */
+  --lid-z: 5.5px;         /* lid mid-plane. Lifted 1.5px so the display
+                             never lands coplanar with the deck (z-fighting) */
+
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--W);
+  height: var(--D);
+  transform-style: preserve-3d;
+  transform:
+    translate(-50%, -50%)
+    rotateX(90deg)
+    rotateZ(var(--spin));
+}
+
+.mb__face {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform-style: preserve-3d;
+}
+
+/* ═══════════════ BASE ═══════════════ */
+
+/* top of the base — the deck. div-top = hinge side, div-bottom = front. */
+.mb__deck {
+  width: var(--W);
+  height: var(--D);
+  margin: 0;
+  transform: translate(-50%, -50%);
+  border-radius: 26px;
+  overflow: hidden;
+  background:
+    linear-gradient(104deg,
+      #4a4a52 0%,
+      #2f2f37 14%,
+      #212127 32%,
+      #1a1a1f 48%,
+      #26262d 66%,
+      #15151a 84%,
+      #232329 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.075),
+    inset 0 1px 0 rgba(255,255,255,.13),
+    inset 0 -1px 0 rgba(0,0,0,.6);
+}
+
+/* brushed-anodised micro texture */
+.mb__deck::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    96deg,
+    rgba(255,255,255,.022) 0 1px,
+    rgba(0,0,0,.022) 1px 3px);
+  pointer-events: none;
+}
+
+.deck {
+  position: absolute; inset: 0;
+  padding: 22px 0 27px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ── speaker grilles ───────────────────────────────────────── */
+.deck__speaker {
+  position: absolute;
+  top: 30px;
+  width: 58px;
+  height: 132px;
+  border-radius: 3px;
+  background-image:
+    repeating-linear-gradient(90deg,
+      rgba(0,0,0,.62) 0 1.6px,
+      rgba(0,0,0,0) 1.6px 4.2px),
+    repeating-linear-gradient(0deg,
+      rgba(0,0,0,.5) 0 1.4px,
+      rgba(0,0,0,0) 1.4px 4.6px);
+  -webkit-mask-image: radial-gradient(120% 90% at 50% 50%, #000 58%, transparent 100%);
+  mask-image: radial-gradient(120% 90% at 50% 50%, #000 58%, transparent 100%);
+  opacity: .85;
+}
+.deck__speaker--l { left: 16px; }
+.deck__speaker--r { right: 16px; }
+
+/* ── keyboard well ─────────────────────────────────────────── */
+.deck__kbd {
+  width: 392px;
+  height: 159px;
+  flex: none;
+  padding: 5px;
+  border-radius: 10px;
+  background: linear-gradient(#0a0a0c, #121216);
+  box-shadow:
+    inset 0 1px 2px rgba(0,0,0,.95),
+    inset 0 -1px 0 rgba(255,255,255,.045),
+    0 1px 0 rgba(255,255,255,.05);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.krow { display: flex; gap: 3px; flex: 1 1 0; min-height: 0; }
+
+.key {
+  position: relative;
+  flex: var(--u) 1 0;
+  min-width: 0;
+  border-radius: 5px;
+  background: linear-gradient(#1c1c20, #0d0d10 72%, #08080a);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.075),
+    inset 0 -1px 0 rgba(0,0,0,.8),
+    0 1px 1.5px rgba(0,0,0,.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+/* backlight bloom under each cap */
+.key::before {
+  content: "";
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(120% 130% at 50% 118%,
+      rgba(190,214,255,.55), rgba(140,175,255,.12) 58%, transparent 78%);
+  opacity: calc(var(--lit) * .85);
+}
+.key b {
+  position: relative;
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: .02em;
+  line-height: 1;
+  color: #dfe7f5;
+  opacity: calc(.10 + .82 * var(--lit));
+  text-shadow: 0 0 calc(6px * var(--lit)) rgba(160,195,255,.85);
+  white-space: nowrap;
+  pointer-events: none;
+}
+.key--wide b { font-size: 7px; }
+
+/* ── trackpad ─────────────────────────────────────────────── */
+.deck__pad {
+  margin-top: 12px;
+  width: 300px;
+  height: 178px;
+  flex: none;
+  border-radius: 12px;
+  padding: 1.5px;
+  background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.02) 40%, rgba(255,255,255,.05));
+  box-shadow:
+    inset 0 1px 1px rgba(0,0,0,.9),
+    0 1px 0 rgba(255,255,255,.05);
+}
+.deck__pad i {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 10.5px;
+  background:
+    radial-gradient(80% 60% at 50% 0%, rgba(255,255,255,.05), transparent 70%),
+    linear-gradient(168deg, #2a2a31, #1d1d22 45%, #17171b);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.55);
+}
+
+/* ── front foot notch (on the deck, hinting the lip) ───────── */
+.deck__foot {
+  position: absolute;
+  left: 50%; bottom: 6px;
+  transform: translateX(-50%);
+  width: 96px; height: 9px;
+  border-radius: 0 0 10px 10px;
+  background: linear-gradient(rgba(0,0,0,.42), rgba(0,0,0,0));
+}
+
+/* ── light the screen throws onto the deck ─────────────────── */
+.deck__glow {
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  height: 300px;
+  background:
+    linear-gradient(180deg,
+      rgba(150,190,255,.30) 0%,
+      rgba(140,180,255,.15) 26%,
+      rgba(130,170,255,.05) 55%,
+      transparent 100%);
+  opacity: var(--glow);
+  pointer-events: none;
+}
+
+/* ── broad specular sweep across the aluminium ─────────────── */
+.deck__sheen {
+  position: absolute; inset: 0;
+  background: linear-gradient(118deg,
+    transparent 26%,
+    rgba(255,255,255,.055) 42%,
+    rgba(255,255,255,.085) 47%,
+    rgba(255,255,255,.02) 54%,
+    transparent 68%);
+  pointer-events: none;
+}
+
+/* ── underside of the base ─────────────────────────────────── */
+.mb__bottom {
+  width: var(--W);
+  height: var(--D);
+  transform: translate(-50%, -50%) translate3d(0, 0, calc(-1 * var(--H))) rotateX(180deg);
+  border-radius: 24px;
+  background: radial-gradient(120% 120% at 50% 40%, #16161a, #0b0b0e 70%);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.05);
+}
+
+/* ── the four walls of the base ────────────────────────────── */
+.mb__wall {
+  height: var(--H);
+  background: linear-gradient(180deg, #33333b 0%, #1c1c21 34%, #101014 78%, #0a0a0d 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.20),
+    inset 0 -1px 0 rgba(0,0,0,.75);
+  overflow: hidden;
+}
+
+.mb__wall--front {
+  width: var(--W);
+  border-radius: 0 0 8px 8px;
+  transform:
+    translate(-50%, -50%)
+    translate3d(0, var(--hd), calc(-1 * var(--hh)))
+    rotateX(-90deg);
+}
+.mb__wall--back {
+  width: var(--W);
+  transform:
+    translate(-50%, -50%)
+    translate3d(0, calc(-1 * var(--hd)), calc(-1 * var(--hh)))
+    rotateX(90deg);
+  background: linear-gradient(0deg, #2c2c33 0%, #17171b 40%, #0c0c10 100%);
+}
+.mb__wall--left {
+  width: var(--D);
+  transform:
+    translate(-50%, -50%)
+    translate3d(calc(-1 * var(--hw)), 0, calc(-1 * var(--hh)))
+    rotateY(-90deg) rotateZ(-90deg);
+}
+.mb__wall--right {
+  width: var(--D);
+  transform:
+    translate(-50%, -50%)
+    translate3d(var(--hw), 0, calc(-1 * var(--hh)))
+    rotateY(90deg) rotateZ(90deg);
+}
+
+/* foot notch cut into the front wall */
+.wall__foot {
+  position: absolute;
+  left: 50%; bottom: -1px;
+  transform: translateX(-50%);
+  width: 92px; height: 8px;
+  border-radius: 8px 8px 0 0;
+  background: linear-gradient(#050507, #131317);
+  box-shadow: inset 0 1px 2px rgba(0,0,0,.9);
+}
+
+/* ports */
+.port {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #050507;
+  box-shadow:
+    inset 0 1px 1.5px rgba(0,0,0,.95),
+    0 1px 0 rgba(255,255,255,.07);
+}
+.port--magsafe { left: 9%;  width: 22px; height: 9px;  border-radius: 4px; }
+.port--tb      { left: 27%; width: 20px; height: 7px;  border-radius: 2px; }
+.port--tb + .port--tb { left: 41%; }
+.port--jack    { left: 62%; width: 13px; height: 12px; border-radius: 6px; }
+.port--hdmi    { left: 16%; width: 26px; height: 8px;  border-radius: 1px; }
+.port--sd      { left: 36%; width: 30px; height: 6px;  border-radius: 1px; }
+
+/* ═══════════════ LID ═══════════════ */
+
+.mb__lid {
+  position: absolute;
+  left: 0; top: 0;
+  width: var(--W);
+  height: var(--D);
+  transform-style: preserve-3d;
+  transform-origin: 50% 0%;              /* hinge = back edge */
+  transform: translate3d(0, 0, var(--lid-z)) rotateX(var(--lid));
+}
+
+/* outer face — anodised lid + polished logo */
+.lid__alu {
+  inset: 0;
+  left: 0; top: 0;
+  width: var(--W); height: var(--D);
+  transform: translateZ(var(--ht));
+  backface-visibility: hidden;
+  border-radius: 24px;
+  overflow: hidden;
+  background:
+    linear-gradient(128deg,
+      #4c4c55 0%,
+      #2e2e36 16%,
+      #1f1f25 36%,
+      #19191e 54%,
+      #26262d 74%,
+      #141418 90%,
+      #212127 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.085),
+    inset 0 1px 0 rgba(255,255,255,.14);
+}
+.lid__alu::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(122deg,
+    transparent 30%,
+    rgba(255,255,255,.06) 44%,
+    rgba(255,255,255,.10) 48%,
+    transparent 62%);
+}
+/* the lid is viewed from its BACK face, so the inner wrapper is
+   pre-rotated 180° to keep the artwork the right way up. */
+.lid__alu-inner {
+  position: absolute; inset: 0;
+  transform: rotate(180deg);
+}
+.lid__logo {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 46px; height: 56px;
+  transform: translate(-50%, -50%);
+  background:
+    radial-gradient(60% 42% at 50% 12%, rgba(255,255,255,.5), transparent 70%),
+    linear-gradient(160deg, #d8d8de 0%, #8e8e97 42%, #6c6c76 58%, #b9b9c2 100%);
+  -webkit-mask-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 17 20'>\
+<path d='M13.2 10.6c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.9-1.5-.1-2.8.9-3.5.9-.7 0-1.8-.9-3-.8-1.6 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.3 2.9 2.3 1.2 0 1.6-.7 3-.7 1.4 0 1.8.7 3 .7 1.2 0 2-1.1 2.8-2.2.9-1.3 1.3-2.5 1.3-2.6-.1 0-2.5-1-2.5-3.8zM11.2 4.2c.6-.8 1-1.9.9-3-.9 0-2 .6-2.7 1.4-.6.7-1.1 1.8-.9 2.9 1 .1 2-.5 2.7-1.3z'/></svg>");
+  mask-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 17 20'>\
+<path d='M13.2 10.6c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.9-1.5-.1-2.8.9-3.5.9-.7 0-1.8-.9-3-.8-1.6 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.3 2.9 2.3 1.2 0 1.6-.7 3-.7 1.4 0 1.8.7 3 .7 1.2 0 2-1.1 2.8-2.2.9-1.3 1.3-2.5 1.3-2.6-.1 0-2.5-1-2.5-3.8zM11.2 4.2c.6-.8 1-1.9.9-3-.9 0-2 .6-2.7 1.4-.6.7-1.1 1.8-.9 2.9 1 .1 2-.5 2.7-1.3z'/></svg>");
+  -webkit-mask-size: contain; mask-size: contain;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  opacity: .92;
+}
+
+/* inner face — the display.
+   rotateX(180deg) puts it on the underside of the lid; the browser then
+   shows it from the front once the lid swings past the camera elevation,
+   so the artwork is authored the normal way up.                        */
+.lid__screen {
+  inset: 0;
+  left: 0; top: 0;
+  width: var(--W); height: var(--D);
+  transform: rotateX(180deg) translateZ(var(--ht));
+  backface-visibility: hidden;
+  border-radius: 24px;
+  overflow: hidden;
+  background:
+    linear-gradient(#0b0b0f, #060608);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.07);
+}
+
+.scr {
+  position: absolute; inset: 0;
+  padding: 10px 10px 36px;              /* bezel 10px · chin 36px */
+}
+
+/* "MacBook Pro" etched into the chin */
+.scr::after {
+  content: "MacBook Pro";
+  position: absolute;
+  left: 50%; bottom: 12px;
+  transform: translateX(-50%);
+  font-size: 8px;
+  letter-spacing: .16em;
+  color: rgba(255,255,255,.16);
+  white-space: nowrap;
+}
+
+.scr__panel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 0 0 .5px rgba(0,0,0,.9);
+}
+
+.scr__wall {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(88% 66% at 12% 6%,   rgba(255,146,84,.95),  transparent 62%),
+    radial-gradient(78% 78% at 90% 12%,  rgba(122,72,255,.92),  transparent 64%),
+    radial-gradient(92% 92% at 74% 96%,  rgba(0,196,224,.85),   transparent 62%),
+    radial-gradient(70% 70% at 18% 92%,  rgba(255,58,142,.72),  transparent 64%),
+    conic-gradient(from 208deg at 50% 50%, #1b1030, #071a2c, #2a0f2a, #120a24, #1b1030);
+  transform: scale(1.08);
+  animation: wallDrift 28s ease-in-out infinite alternate;
+}
+@keyframes wallDrift {
+  from { transform: scale(1.06) translate3d(-1.2%, .6%, 0); filter: saturate(1); }
+  to   { transform: scale(1.16) translate3d(1.8%, -1.4%, 0); filter: saturate(1.18); }
+}
+
+/* ── on-screen interface (fades in as we push into the panel) ── */
+.scr__ui {
+  position: absolute; inset: 0;
+  opacity: var(--ui);
+}
+
+.menubar {
+  position: absolute; inset: 0 0 auto 0;
+  height: 20px;
+  display: flex; align-items: center; gap: 11px;
+  padding: 0 8px;
+  background: rgba(10,10,16,.72);
+  font-size: 7.5px;
+  color: rgba(255,255,255,.86);
+}
+.menubar__apple {
+  width: 8px; height: 9px; flex: none;
+  background: rgba(255,255,255,.9);
+  -webkit-mask-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 17 20'><path d='M13.2 10.6c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.9-1.5-.1-2.8.9-3.5.9-.7 0-1.8-.9-3-.8-1.6 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.3 2.9 2.3 1.2 0 1.6-.7 3-.7 1.4 0 1.8.7 3 .7 1.2 0 2-1.1 2.8-2.2.9-1.3 1.3-2.5 1.3-2.6-.1 0-2.5-1-2.5-3.8zM11.2 4.2c.6-.8 1-1.9.9-3-.9 0-2 .6-2.7 1.4-.6.7-1.1 1.8-.9 2.9 1 .1 2-.5 2.7-1.3z'/></svg>");
+  mask-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 17 20'><path d='M13.2 10.6c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.9-1.5-.1-2.8.9-3.5.9-.7 0-1.8-.9-3-.8-1.6 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.3 2.9 2.3 1.2 0 1.6-.7 3-.7 1.4 0 1.8.7 3 .7 1.2 0 2-1.1 2.8-2.2.9-1.3 1.3-2.5 1.3-2.6-.1 0-2.5-1-2.5-3.8zM11.2 4.2c.6-.8 1-1.9.9-3-.9 0-2 .6-2.7 1.4-.6.7-1.1 1.8-.9 2.9 1 .1 2-.5 2.7-1.3z'/></svg>");
+  -webkit-mask-size: contain; mask-size: contain;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+}
+.menubar__app { font-weight: 600; }
+.menubar__menu { opacity: .8; }
+.menubar__spacer { flex: 1; }
+.menubar__ico {
+  width: 9px; height: 6px; flex: none;
+  border: .7px solid rgba(255,255,255,.6);
+  border-radius: 1.5px;
+  position: relative;
+}
+.menubar__ico--batt::after {
+  content: ""; position: absolute; inset: 1px 1px 1px 1px;
+  background: rgba(255,255,255,.85); border-radius: .5px;
+}
+.menubar__ico--wifi { border: none; background:
+  radial-gradient(closest-side, transparent 55%, rgba(255,255,255,.75) 60% 78%, transparent 80%); }
+.menubar__ico--sun { border: none; background:
+  radial-gradient(closest-side, rgba(255,255,255,.85) 42%, transparent 46%); }
+.menubar__clock { font-variant-numeric: tabular-nums; opacity: .9; }
+
+.win {
+  position: absolute;
+  left: 8%; right: 8%;
+  top: 16%; bottom: 20%;
+  border-radius: 7px;
+  overflow: hidden;
+  background: rgba(20,20,26,.90);
+  box-shadow: 0 14px 40px rgba(0,0,0,.5), inset 0 0 0 .5px rgba(255,255,255,.12);
+  display: flex;
+  flex-direction: column;
+}
+.win__bar {
+  height: 15px; flex: none;
+  display: flex; align-items: center; gap: 4px;
+  padding: 0 6px;
+  background: rgba(255,255,255,.06);
+}
+.dot { width: 5px; height: 5px; border-radius: 50%; }
+.dot--r { background: #ff5f57; }
+.dot--y { background: #febc2e; }
+.dot--g { background: #28c840; }
+.win__title {
+  margin-left: 8px;
+  font-size: 6.5px;
+  color: rgba(255,255,255,.62);
+  letter-spacing: .04em;
+}
+.win__body { flex: 1; display: flex; min-height: 0; }
+.win__side {
+  width: 20%; flex: none;
+  padding: 7px 5px;
+  display: flex; flex-direction: column; gap: 5px;
+  background: rgba(0,0,0,.22);
+}
+.win__side span {
+  height: 3px; border-radius: 2px;
+  background: rgba(255,255,255,.22);
+}
+.win__side span:first-child { background: rgba(41,151,255,.85); width: 80%; }
+.win__grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+  padding: 8px;
+  align-content: start;
+}
+.win__grid i {
+  aspect-ratio: 1;
+  border-radius: 3px;
+  background: linear-gradient(145deg, rgba(255,255,255,.16), rgba(255,255,255,.04));
+  box-shadow: inset 0 0 0 .5px rgba(255,255,255,.10);
+}
+.win__grid i.is-lit {
+  background: linear-gradient(145deg, rgba(41,151,255,.9), rgba(191,90,242,.55));
+  box-shadow: 0 0 10px -2px rgba(41,151,255,.8);
+}
+
+.dock {
+  position: absolute;
+  left: 50%; bottom: 5px;
+  transform: translateX(-50%);
+  display: flex; align-items: flex-end; gap: 4px;
+  padding: 4px 6px;
+  border-radius: 10px;
+  background: rgba(255,255,255,.17);
+  box-shadow: inset 0 0 0 .5px rgba(255,255,255,.22);
+}
+.dock__app {
+  width: 17px; height: 17px;
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 .5px rgba(255,255,255,.16);
+}
+.dock__app--finder  { background: linear-gradient(150deg, #4fc3f7, #0277bd); }
+.dock__app--mail    { background: linear-gradient(150deg, #7ec8ff, #1a73e8); }
+.dock__app--safari  { background: linear-gradient(150deg, #8fd3ff, #0a84ff); }
+.dock__app--music   { background: linear-gradient(150deg, #ff7b8a, #fa243c); }
+.dock__app--code    { background: linear-gradient(150deg, #7b8cff, #3a2fd8); }
+.dock__app--term    { background: linear-gradient(150deg, #4a4a52, #14141a); }
+.dock__app--trash   { background: linear-gradient(150deg, rgba(255,255,255,.28), rgba(255,255,255,.06)); }
+.dock__sep { width: .5px; height: 15px; background: rgba(255,255,255,.25); margin: 0 2px; }
+
+/* ── notch ─────────────────────────────────────────────────── */
+.scr__notch {
+  position: absolute;
+  left: 50%; top: 8px;
+  transform: translateX(-50%);
+  width: 46px; height: 11px;
+  border-radius: 0 0 7px 7px;
+  background: #05050a;
+  box-shadow: 0 1px 2px rgba(0,0,0,.5);
+  display: flex; align-items: center; justify-content: flex-end;
+  padding-right: 10px;
+}
+.scr__cam {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 32%, #2a3f63 0%, #0b1020 55%, #04060c 100%);
+  box-shadow: 0 0 0 .5px rgba(120,150,200,.35), inset 0 0 1.5px rgba(120,180,255,.5);
+}
+
+/* ── glass reflection over the whole panel ─────────────────── */
+.scr__glass {
+  position: absolute; inset: 0;
+  border-radius: 4px;
+  pointer-events: none;
+  background: linear-gradient(114deg,
+    transparent 24%,
+    rgba(255,255,255,.035) 40%,
+    rgba(255,255,255,.085) 45%,
+    rgba(255,255,255,.02) 52%,
+    transparent 66%);
+}
+
+/* ── power veil (1 = fully lit) ────────────────────────────── */
+.scr__power {
+  position: absolute; inset: 0;
+  background: radial-gradient(120% 100% at 50% 40%, #0a0a0e, #000 78%);
+  opacity: calc(1 - var(--power));
+  pointer-events: none;
+}
+
+/* ── lid edges (8px of machined thickness) ─────────────────── */
+.lid__edge {
+  background: linear-gradient(180deg, #3a3a43 0%, #1b1b20 40%, #0d0d11 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.22);
+}
+.lid__edge--free {                       /* div-bottom = the free edge */
+  width: var(--W); height: var(--T);
+  transform:
+    translate(-50%, -50%)
+    translate3d(0, var(--hd), 0)
+    rotateX(-90deg);
+  border-radius: 0 0 4px 4px;
+}
+.lid__edge--hinge {                      /* div-top = the hinge edge */
+  width: var(--W); height: var(--T);
+  transform:
+    translate(-50%, -50%)
+    translate3d(0, calc(-1 * var(--hd)), 0)
+    rotateX(90deg);
+}
+.lid__edge--left {
+  width: var(--D); height: var(--T);
+  transform:
+    translate(-50%, -50%)
+    translate3d(calc(-1 * var(--hw)), 0, 0)
+    rotateY(-90deg) rotateZ(-90deg);
+}
+.lid__edge--right {
+  width: var(--D); height: var(--T);
+  transform:
+    translate(-50%, -50%)
+    translate3d(var(--hw), 0, 0)
+    rotateY(90deg) rotateZ(90deg);
+}
+
+/* ═══════════════ CONTACT SHADOW ═══════════════ */
+.mb__shadow {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 1080px; height: 780px;
+  transform: translate(-50%, -50%) translate3d(0, 0, -21px);
+  background:
+    radial-gradient(46% 42% at 50% 52%, rgba(0,0,0,.92) 0%, rgba(0,0,0,.62) 42%, rgba(0,0,0,.22) 68%, transparent 82%),
+    radial-gradient(70% 62% at 50% 50%, rgba(0,0,0,.35), transparent 72%);
+  opacity: var(--shade);
+  pointer-events: none;
+}
